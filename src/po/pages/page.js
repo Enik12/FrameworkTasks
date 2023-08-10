@@ -2,8 +2,8 @@
 
 module.exports = class Page {
 
-    open (path) {
-        return browser.url(path)
+    open () {
+        return browser.url('https://cloud.google.com/')
     };
 
 };

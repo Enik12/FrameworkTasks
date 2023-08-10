@@ -1,10 +1,9 @@
-const { start } = require('chromedriver');
 const Page = require('./page');
 
 class CalculatorPage extends Page{
 
-    get iFrame1(){ return $('iframe[allow="clipboard-write https://cloud-dot-devsite-v2-prod.appspot.com"]')};
-    get iFrame2(){ return $('#myFrame')};
+    get iFrame1() { return $('iframe[allow="clipboard-write https://cloud-dot-devsite-v2-prod.appspot.com"]') };
+    get iFrame2() { return $('#myFrame') };
     get computeEngine () { return $('div.tab-holder.compute') };
     get numberOfInstances () { return $('//input[@ng-model="listingCtrl.computeServer.quantity"]') };
     get instanceFor () { return $('//input[@ng-model="listingCtrl.computeServer.label"]') };
@@ -21,7 +20,7 @@ class CalculatorPage extends Page{
     get twoGB () { return $('//md-option[@ng-repeat="item in listingCtrl.dynamicSsd.computeServer"] [@value="2"]') };
     get datacenterLocation () { return $('//md-select[@placeholder="Datacenter location"]') };
     get inputLocation () { return $('//input[@ng-model="listingCtrl.inputRegionText.computeServer"]') };
-    get frankfurt () { return $('//md-option[@ng-repeat="item in listingCtrl.fullRegionList | filter:listingCtrl.inputRegionText.computeServer"][26]') }; 
+    get frankfurt () { return $('//*[@id="select_container_132"]/md-select-menu/md-content/md-optgroup/md-option[26]') }; 
     get committedUsage () { return $('//md-select[@placeholder="Committed usage"]') };
     get oneyear () { return $('//div[@class="md-select-menu-container md-active md-clickable"]//md-option[2]') };
     get addToEstimateBtn () { return $('button.md-raised.md-primary.cpc-button.md-button.md-ink-ripple') };
@@ -33,9 +32,15 @@ class CalculatorPage extends Page{
     get checkLocalSsd () { return $('//*[@id="compute"]/md-list/md-list-item[7]/div[1]') };
     get checkRentalAmount () { return $('div.cpc-cart-total > h2 > b') };
 
+    get btnEmailEstimate () { return $('//button[@id="Email Estimate"]') };
+    get inputEmail () { return $('//form[@name="emailForm"]/md-content/div[3]/md-input-container/input') };
+    get btnSendEmail () { return $('form > md-dialog-actions > button:last-child') };
+
     async switchFrames(){
-        await browser.switchToFrame(await this.iFrame1);
-        await browser.switchToFrame(await this.iFrame2);
+        let iframeOne = await this.iFrame1;
+        await browser.switchToFrame(iframeOne);
+        let iframeTwo = await this.iFrame2;
+        await browser.switchToFrame(iframeTwo);
     };
 
     async goOutFrames(){
@@ -65,27 +70,23 @@ class CalculatorPage extends Page{
         await this.datacenterLocation.click();
         await this.inputLocation.click();
         await this.inputLocation.setValue(location);
-        await this.frankfurt.waitForClickable( { timeout: 6000 } );
         await this.frankfurt.click();
         await this.committedUsage.click();
         await this.oneyear.click();
         await this.addToEstimateBtn.click();
     };
 
-    async checkFields(textVm, textType, textRegion, textSsd, textTerm){
-        await expect(this.checkVmClass).toHaveTextContaining(textVm);
-        await expect(this.checkInstanceType).toHaveTextContaining(textType);
-        await expect(this.checkRegion).toHaveTextContaining(textRegion);
-        await expect(this.checkLocalSsd).toHaveTextContaining(textSsd);
-        await expect(this.checkCommitmentTerm).toHaveTextContaining(textTerm);
-    };
-
-    async checkCost(amount){
-        await expect(this.checkRentalAmount).toHaveTextContaining(amount);
+    async sendEmail(email){
+        await this.btnEmailEstimate.click();
+        await browser.pause(2000);
+        await this.inputEmail.setValue(email);
+        await browser.pause(2000);
+        await this.btnSendEmail.click();
+        await browser.pause(2000);
     };
 
     open(){
-        return super.open('products/calculator');
+        return super.open();
     };
 };
 

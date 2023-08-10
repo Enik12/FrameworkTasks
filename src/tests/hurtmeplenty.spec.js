@@ -14,8 +14,25 @@ const AMOUNT = 'Total Estimated Cost: USD 1,081.20 per 1 month';
 
 describe("Find a calculator and add estimate", () => {
 
-    it('search calculator', async () => {     
-        await HomePage.open();
+    afterEach(async function () {
+        if (this.currentTest.state != "passed") {
+            let screenshotFileName = this.currentTest.fullTitle();
+            let stringToArray = screenshotFileName.split(" ");
+            let arrayToString = stringToArray.join('-');
+            let date = new Date();
+            let hour = date.getHours();
+            let minutes = date.getMinutes();
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            let currentDate = [day, month, year, hour, minutes].join('-');
+            let name = arrayToString + currentDate;
+            await browser.saveScreenshot('errorShots/' + name + '.png');
+        }
+    });
+
+    it('search calculator', async () => {   
+        await HomePage.open();  
         await browser.setTimeout({ 'pageLoad': 10000 }); 
         await HomePage.searchCalculator(SEARCH_TEXT);  
     });
@@ -30,15 +47,15 @@ describe("Find a calculator and add estimate", () => {
     });
 
     it('check fields', async () => {
-        await CalculatorPage.checkFields(VM_CLASS, 
-                                         INSTANCE_TYPE, 
-                                         TEXT_LOCATION, 
-                                         LOCAL_SSD, 
-                                         COMMITMENT_TERM);
+        await expect(CalculatorPage.checkVmClass).toHaveTextContaining(VM_CLASS);
+        await expect(CalculatorPage.checkInstanceType).toHaveTextContaining(INSTANCE_TYPE);
+        await expect(CalculatorPage.checkRegion).toHaveTextContaining(TEXT_LOCATION);
+        await expect(CalculatorPage.checkLocalSsd).toHaveTextContaining(LOCAL_SSD);
+        await expect(CalculatorPage.checkCommitmentTerm).toHaveTextContaining(COMMITMENT_TERM);
     });
 
     it('check amounts', async () => {
-        await CalculatorPage.checkCost(AMOUNT);
+        await expect(CalculatorPage.checkRentalAmount).toHaveTextContaining(AMOUNT);
         await CalculatorPage.goOutFrames();
     });
 });

@@ -5,7 +5,7 @@ exports.config = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
-    
+
     //
     // ==================
     // Specify Test Files
@@ -26,6 +26,14 @@ exports.config = {
         './src/tests/**/*.js'
     ],
     // Patterns to exclude.
+    suites: {
+        hurtmeplenty: [
+            './src/tests/hurtmeplenty.spec.js'
+        ],
+        hardcore: [
+            './src/tests/hardcore.spec.js'
+        ]
+    },
     exclude: [
         // 'path/to/excluded/files'
     ],
@@ -52,18 +60,14 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-    
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
+
         maxInstances: 5,
-        //
         browserName: 'chrome',
-        acceptInsecureCerts: true
-        // If outputDir is provided WebdriverIO can capture driver session logs
-        // it is possible to configure which logTypes to include/exclude.
-        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-        // excludeDriverLogs: ['bugreport', 'server'],
+        //acceptInsecureCerts: true,
+        'goog:chromeOptions': {
+            args: ['--ignore-certificate-errors']
+        },
+
     }],
     //
     // ===================
@@ -96,7 +100,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'https://cloud.google.com/',
+    baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -113,7 +117,7 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
-    
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -139,21 +143,20 @@ exports.config = {
         [
             "allure",
             {
-              outputDir: "allure-results",
-              disableWebdriverStepsReporting: true,
-              disableWebdriverScreenshotsReporting: false,
+                outputDir: "allure-results",
+                disableWebdriverStepsReporting: true,
+                disableWebdriverScreenshotsReporting: false,
             }
         ]
     ],
 
 
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000
+        timeout: 60000,
     },
     //
     // =====
@@ -255,7 +258,7 @@ exports.config = {
         context, 
         { error, result, duration, passed, retries }
         ) {
-        if (!passed) {
+        if(!passed){
             browser.takeScreenshot();
         };
     },
