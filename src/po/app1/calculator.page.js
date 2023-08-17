@@ -1,4 +1,4 @@
-const Page = require('./page');
+const Page = require('../page');
 
 class CalculatorPage extends Page{
 
@@ -24,14 +24,12 @@ class CalculatorPage extends Page{
     get committedUsage () { return $('//md-select[@placeholder="Committed usage"]') };
     get oneyear () { return $('//div[@class="md-select-menu-container md-active md-clickable"]//md-option[2]') };
     get addToEstimateBtn () { return $('button.md-raised.md-primary.cpc-button.md-button.md-ink-ripple') };
-
     get checkRegion () { return $('//*[@id="compute"]/md-list/md-list-item[1]/div[1]') };
     get checkCommitmentTerm () { return $('//*[@id="compute"]/md-list/md-list-item[3]/div[1]') };
     get checkVmClass () { return $('//*[@id="compute"]/md-list/md-list-item[4]/div[1]') };
     get checkInstanceType () { return $('//*[@id="compute"]/md-list/md-list-item[5]/div[1]') };
     get checkLocalSsd () { return $('//*[@id="compute"]/md-list/md-list-item[7]/div[1]') };
     get checkRentalAmount () { return $('div.cpc-cart-total > h2 > b') };
-
     get btnEmailEstimate () { return $('//button[@id="Email Estimate"]') };
     get inputEmail () { return $('//form[@name="emailForm"]/md-content/div[3]/md-input-container/input') };
     get btnSendEmail () { return $('form > md-dialog-actions > button:last-child') };
@@ -78,11 +76,8 @@ class CalculatorPage extends Page{
 
     async sendEmail(email){
         await this.btnEmailEstimate.click();
-        await browser.pause(2000);
         await this.inputEmail.setValue(email);
-        await browser.pause(2000);
         await this.btnSendEmail.click();
-        await browser.pause(2000);
     };
 
     open(){

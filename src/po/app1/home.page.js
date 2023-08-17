@@ -1,9 +1,9 @@
-const Page = require('./page');
+const Page = require('../page');
 
 class HomePage extends Page{
 
 
-    get seachInput () { return $('//input[@role="searchbox"]') };
+    get seachInput () { return $('//input[@placeholder="Search"]') };
     get calculatorResult () { return $('//div/a[@href="https://cloud.google.com/products/calculator"]') };
     
     async searchCalculator (text) {

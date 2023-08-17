@@ -1,7 +1,7 @@
-const HomePage = require('../po/pages/home.page');
-const CalculatorPage = require('../po/pages/calculator.page');
+const HomePage = require('../po/app1/home.page');
+const CalculatorPage = require('../po/app1/calculator.page');
 
-const SEARCH_TEXT = "Google Cloud Platform Pricing Calculator";
+const SEARCH_TEXT = 'Google Cloud Platform Pricing Calculator';
 const NUMBER_OF_INSTANCE = 4;
 const REASON_FOR_INSTANCE = 'leave blank';
 const LOCATION = 'Frankfurt';
@@ -12,24 +12,7 @@ const LOCAL_SSD = 'Local SSD: 2x375 GiB';
 const COMMITMENT_TERM = 'Commitment term: 1 Year';
 const AMOUNT = 'Total Estimated Cost: USD 1,081.20 per 1 month';
 
-describe("Find a calculator and add estimate", () => {
-
-    afterEach(async function () {
-        if (this.currentTest.state != "passed") {
-            let screenshotFileName = this.currentTest.fullTitle();
-            let stringToArray = screenshotFileName.split(" ");
-            let arrayToString = stringToArray.join('-');
-            let date = new Date();
-            let hour = date.getHours();
-            let minutes = date.getMinutes();
-            let day = date.getDate();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            let currentDate = [day, month, year, hour, minutes].join('-');
-            let name = arrayToString + currentDate;
-            await browser.saveScreenshot('errorShots/' + name + '.png');
-        }
-    });
+describe('Find a calculator and add estimate', () => {
 
     it('search calculator', async () => {   
         await HomePage.open();  
