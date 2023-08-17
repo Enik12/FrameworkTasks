@@ -13,7 +13,7 @@ class EmailPage extends Page{
     };
 
     open () {
-        return super.open2();
+        return super.open('https://internxt.com/temporary-email');
     };
 };
 

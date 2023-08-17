@@ -81,7 +81,7 @@ class CalculatorPage extends Page{
     };
 
     open(){
-        return super.open();
+        return super.open('https://cloud.google.com');
     };
 };
 
